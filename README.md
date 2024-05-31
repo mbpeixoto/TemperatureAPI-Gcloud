@@ -1,5 +1,9 @@
 # Sistema de Clima
 
+## Como testar
+Troque o pâmetro cep da seguinte url pelo valor desejado:
+https://system-temperature-5em4lfs7pa-uc.a.run.app/temperatura/{cep}
+
 ## Objetivo
 Desenvolver um sistema em Go que receba um CEP, identifica a cidade e retorna o clima atual (temperatura em graus celsius, fahrenheit e kelvin). Esse sistema deverá ser publicado no Google Cloud Run.
 
@@ -43,8 +47,3 @@ Sendo K = Kelvin
 - Testes automatizados demonstrando o funcionamento.
 - Utilize docker/docker-compose para que possamos realizar os testes de sua aplicação.
 - Deploy realizado no Google Cloud Run (free tier) e endereço ativo para ser acessado.
-
-
-## Como testar
-Troque o pâmetro cep da seguinte url pelo valor desejado:
-https://system-temperature-5em4lfs7pa-uc.a.run.app/temperatura/{cep}
