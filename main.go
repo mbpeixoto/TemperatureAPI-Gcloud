@@ -62,7 +62,7 @@ func HandleTemperatura(w http.ResponseWriter, r *http.Request) {
 	temp_c, err := getWeather(apiKey, location)
 	
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}
 	temp_f := celsiusToFarenheit(temp_c)
@@ -90,7 +90,7 @@ func getWeather(apiKey string, location string) (float64, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return 0, fmt.Errorf("erro ao chamar weather API com status: %s", resp.Status)
+		return 0, fmt.Errorf("can not find zipcode")
 	}
 
 	var weatherResp WeatherResponse
