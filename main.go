@@ -24,12 +24,11 @@ type ViaCep struct {
 	Siafi       string `json:"siafi"`
 }
 
-
 type TemperaturaResponse struct {
-	Localidade string `json:"Localidade"`
-	TemperaturaGraus float64 `json:"Temp_C"`
+	Localidade           string  `json:"Localidade"`
+	TemperaturaGraus     float64 `json:"Temp_C"`
 	TemperaturaFarenheit float64 `json:"Temp_F"`
-	TemperaturaKelvin float64 `json:"Temp_K"`
+	TemperaturaKelvin    float64 `json:"Temp_K"`
 }
 
 // Struct para deserializar a resposta JSON
@@ -39,16 +38,26 @@ type WeatherResponse struct {
 	} `json:"current"`
 }
 
-
 func HandleTemperatura(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	cep := vars["cep"]
 
-	req, err := http.Get("http://viacep.com.br/ws/"+cep +"/json/")
-	if err != nil {
+	if len(cep) != 8 {
 		http.Error(w, "invalid zipcode", http.StatusUnprocessableEntity)
 		return
 	}
+
+	req, err := http.Get("http://viacep.com.br/ws/" + cep + "/json/")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if req.StatusCode != http.StatusOK {
+		http.Error(w, "invalid zipcode", http.StatusUnprocessableEntity)
+		return
+	}
+	
 	defer req.Body.Close()
 
 	var viaCep ViaCep
@@ -60,7 +69,7 @@ func HandleTemperatura(w http.ResponseWriter, r *http.Request) {
 	location := viaCep.Localidade
 
 	temp_c, err := getWeather(apiKey, location)
-	
+
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
@@ -82,7 +91,7 @@ func HandleTemperatura(w http.ResponseWriter, r *http.Request) {
 func getWeather(apiKey string, location string) (float64, error) {
 	formattedLocation := url.QueryEscape(location)
 	urlWeather := fmt.Sprintf("http://api.weatherapi.com/v1/current.json?key=%s&q=%s", apiKey, formattedLocation)
-	
+
 	resp, err := http.Get(urlWeather)
 	if err != nil {
 		return 0, err
