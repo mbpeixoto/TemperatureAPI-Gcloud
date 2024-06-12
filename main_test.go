@@ -29,7 +29,7 @@ func TestHandleTemperatura_Success(t *testing.T) {
 	router.ServeHTTP(rr, req)
 
 	if status := rr.Code; status != http.StatusOK {
-		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
+		t.Errorf("Status code incorreto: recebeu %v esperava %v", status, http.StatusOK)
 	}
 
 }
@@ -46,12 +46,12 @@ func TestHandleTemperatura_InvalidCEP(t *testing.T) {
 	router.ServeHTTP(rr, req)
 
 	if status := rr.Code; status != http.StatusUnprocessableEntity {
-		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusUnprocessableEntity)
+		t.Errorf("Status code incorreto: recebeu %v esperava %v", status, http.StatusUnprocessableEntity)
 	}
 
 	expected := "invalid zipcode\n"
 	if rr.Body.String() != expected {
-		t.Errorf("handler returned unexpected body: got %v want %v", rr.Body.String(), expected)
+		t.Errorf("Resposta body incorreta: recebeu %v esperava %v", rr.Body.String(), expected)
 	}
 }
 
@@ -68,11 +68,11 @@ func TestHandleTemperatura_CEPNotFound(t *testing.T) {
 	router.ServeHTTP(rr, req)
 
 	if status := rr.Code; status != http.StatusNotFound {
-		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusNotFound)
+		t.Errorf("Status code incorreto: recebeu %v esperava %v", status, http.StatusNotFound)
 	}
 
 	expected := "can not find zipcode\n"
 	if rr.Body.String() != expected {
-		t.Errorf("handler returned unexpected body: got %v want %v", rr.Body.String(), expected)
+		t.Errorf("Resposta body incorreta: recebeu %v esperava %v", rr.Body.String(), expected)
 	}
 }
