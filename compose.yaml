@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      target: runtime
+    ports:
+      - "8080:8080"
+    command: ["./cloudrun"]
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    volumes:
+      - .:/app
+    working_dir: /app

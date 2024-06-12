@@ -57,7 +57,7 @@ func HandleTemperatura(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "invalid zipcode", http.StatusUnprocessableEntity)
 		return
 	}
-	
+
 	defer req.Body.Close()
 
 	var viaCep ViaCep
@@ -65,7 +65,6 @@ func HandleTemperatura(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	fmt.Println(viaCep.Localidade)
 	location := viaCep.Localidade
 
 	temp_c, err := getWeather(apiKey, location)

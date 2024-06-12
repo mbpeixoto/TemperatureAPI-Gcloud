@@ -1,8 +1,28 @@
 # Sistema de Clima
 
 ## Como testar
-Troque o pâmetro cep da seguinte url pelo valor desejado:
+- Troque o pâmetro cep da seguinte url pelo valor desejado para testar o deploy no cloud run:
 https://system-temperature-5em4lfs7pa-uc.a.run.app/temperatura/{cep}
+
+- Para realizar os testes automatizados utilizado docker compose ou go test:
+1. Vá para pasta do projeto:
+2. Rode os comando do docker-compose abaixo para subir a aplicação na porta 8080, com isso estará disponível para testes:
+```
+docker-compose up --build
+
+```
+3. Podemos testar com o curl:
+```
+ curl localhost:8080/temperatura/{cep}
+```
+4. Para realizar os testes automatizados via docker/docker-compose use o comando abaixo:
+```
+docker-compose run --rm test
+```
+5. Também podemos testar usando go test:
+```
+go test -v
+```
 
 ## Objetivo
 Desenvolver um sistema em Go que receba um CEP, identifica a cidade e retorna o clima atual (temperatura em graus celsius, fahrenheit e kelvin). Esse sistema deverá ser publicado no Google Cloud Run.
